@@ -1,0 +1,49 @@
+<head>
+    <title>Sockets</title>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script type ="text/javascript" src="/socket.io/socket.io.js"></script>
+        
+        <script type ="text/javascript">
+            $(document).ready(function (){
+        
+                var socket = io();
+                $('form').submit(function(e){
+                    e.preventDefault();
+                    socket.emit('user_information', {name: $('#name').val(),
+                                                    loc: $('#loc').val(),
+                                                    lang: $('#lang').val(),
+                                                    comment: $('#comment').val()
+                                                    })
+                                                    $(this).children().reset();
+                                                   
+                }
+
+                ))
+                socket.on('user_information', function(data){
+                    $('body').append(`<p>You emitted the following information to the server: ${data}</p>`)
+                    });
+            })
+            </script>
+</head>
+<body>
+
+    <form action="#">
+        <label for="name">Your Name:</label>
+        <input class="form-control" type="text" name="name" id="name">
+        <label for="loc">Dojo Location:</label>
+        <select name="loc" id="loc">
+            <option value="mountain view">Mountain View</option>
+            <option value="bellevue">Bellevue</option>
+            <option value="austin">Austin</option>
+        </select>
+        <label for="lang">Language:</label>
+        <select name="lang" id="lang">
+            <option value="python">Python</option>
+            <option value="javascript">Javascript</option>
+            <option value="ruby">Ruby</option>
+        </select>
+        <label for="comment">Comment (optional):</label>
+        <textarea class="form-control" name="comment" id="comment"></textarea>
+        <input class="btn" type="submit" name="button" value="submit">
+    </form>
+</body>
